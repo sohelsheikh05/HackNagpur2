@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import nodemailer from 'nodemailer';
 interface EmailRequest {
   to: string;
   subject: string;
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Dynamically import nodemailer only when needed
-    const nodemailer = await import('nodemailer');
+
 
     // Create transporter
     const transporter = nodemailer.default.createTransport({

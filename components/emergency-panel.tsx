@@ -12,6 +12,14 @@ interface EmergencyPanelProps {
   onManualEmergency: () => void;
   isEmergencyActive: boolean;
 }
+const vibrateEmergency = () => {
+  console.log('Vibrating...');
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    // SOS style vibration pattern
+    navigator.vibrate([400, 200, 400, 200, 800, 300, 800]);
+  }
+};
+
 
 export default function EmergencyPanel({
   contacts,
@@ -31,7 +39,11 @@ export default function EmergencyPanel({
             variant="destructive"
             size="lg"
             className="w-full h-16 text-lg font-bold"
-            onClick={onManualEmergency}
+           onClick={() => {
+  vibrateEmergency();
+  onManualEmergency();
+}}
+
             disabled={isEmergencyActive}
           >
             {isEmergencyActive ? 'EMERGENCY ACTIVE' : 'MANUAL EMERGENCY'}
