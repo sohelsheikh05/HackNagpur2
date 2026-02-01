@@ -12,13 +12,23 @@ interface EmergencyPanelProps {
   onManualEmergency: () => void;
   isEmergencyActive: boolean;
 }
-const vibrateEmergency = () => {
-  console.log('Vibrating...');
+let alarmAudio: HTMLAudioElement | null = null;
+
+const playAlarmAndVibrate = () => {
   if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
-    // SOS style vibration pattern
-    navigator.vibrate([400, 200, 400, 200, 800, 300, 800]);
+    navigator.vibrate([400, 200, 400, 200, 800]);
   }
+
+  alarmAudio = new Audio('https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg');
+  alarmAudio.loop = true;
+  alarmAudio.play().catch(() => {});
 };
+
+const stopAlarm = () => {
+  alarmAudio?.pause();
+  alarmAudio = null;
+};
+
 
 
 export default function EmergencyPanel({
@@ -40,7 +50,7 @@ export default function EmergencyPanel({
             size="lg"
             className="w-full h-16 text-lg font-bold"
            onClick={() => {
-  vibrateEmergency();
+  playAlarmAndVibrate();
   onManualEmergency();
 }}
 
